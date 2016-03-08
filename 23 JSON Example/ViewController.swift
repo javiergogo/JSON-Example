@@ -12,7 +12,24 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+
+        let url = NSURL(string: "https://freegeoip.net/json/")!
+    
+        let task = NSURLSession.sharedSession().dataTaskWithURL(url) { (data, response, error) -> Void in
+            
+            if let urlContent = data
+            {
+                //print(urlContent)
+                do {
+                    let jsonresult = try NSJSONSerialization.JSONObjectWithData(urlContent, options: NSJSONReadingOptions.MutableContainers)
+                        //si quiero imprimir toda la informacion            print (jsonresult)
+                        print(jsonresult["city"])
+                } catch {       print("JSON serialization was wrong")        }
+            }
+        }
+        
+        task.resume()
+    
     }
 
     override func didReceiveMemoryWarning() {
@@ -20,6 +37,6 @@ class ViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
-
+    
 }
 
